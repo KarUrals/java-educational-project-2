@@ -20,8 +20,8 @@ public class Differ {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Map<String, Object> map1 = objectMapper.readValue(content1, new TypeReference<Map<String,Object>>(){});
-        Map<String, Object> map2 = objectMapper.readValue(content2, new TypeReference<Map<String,Object>>(){});
+        Map<String, Object> map1 = objectMapper.readValue(content1, new TypeReference<>() { });
+        Map<String, Object> map2 = objectMapper.readValue(content2, new TypeReference<>() { });
 
         Set<String> allKeys = new TreeSet<>();
         allKeys.addAll(map1.keySet());
