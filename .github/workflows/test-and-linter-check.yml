@@ -6,10 +6,10 @@ jobs:
   run-test-and-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -19,7 +19,9 @@ jobs:
         with:
           #arguments: build
           build-root-directory: app
-      - name: Execute Gradle build
-        run: ls app/ -la
+      #- run: ls app/ -la
+      - run: cd app/
+      - run: ls -la
+      - run: ls app/ -la
 
         
