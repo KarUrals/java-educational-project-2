@@ -20,4 +20,4 @@ jobs:
           #arguments: build
           #build-root-directory: app
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ls -la
