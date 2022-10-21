@@ -40,7 +40,7 @@ public class Differ {
                 result.append("  " + key + ": " + map1.get(key) + "\n");
             } else {
                 result.append("- " + key + ": " + map1.get(key) + "\n");
-                result.append("  + " + key + ": " + map2.get(key) + "\n");
+                result.append("  + " + key + " : " + map2.get(key) + "\n");
             }
         }
         result.append("}");
