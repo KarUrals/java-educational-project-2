@@ -1,7 +1,6 @@
 name: Java CI
 
-on:
-  push
+on: push
 
 jobs:
   run-test-and-linter:
@@ -10,7 +9,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup JDK 17
-      	uses: actions/setup-java@v3
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -19,4 +18,4 @@ jobs:
         uses: gradle/gradle-build-action@v2
         
       - name: Execute Gradle build
-     	run: ./gradlew build
+        run: ./gradlew build
