@@ -33,14 +33,14 @@ public class Differ {
         for (String key : allKeys) {
             result.append("  ");
             if (!map1.containsKey(key)) {
-                result.append("+ " + key + " : " + map2.get(key) + "\n");
+                result.append("+ " + key + ": " + map2.get(key) + "\n");
             } else if (!map2.containsKey(key)) {
-                result.append("- " + key + " : " + map1.get(key) + "\n");
+                result.append("- " + key + ": " + map1.get(key) + "\n");
             } else if (map1.get(key).equals(map2.get(key))) {
-                result.append("  " + key + " : " + map1.get(key) + "\n");
+                result.append("  " + key + ": " + map1.get(key) + "\n");
             } else {
-                result.append("- " + key + " : " + map1.get(key) + "\n");
-                result.append("  + " + key + " : " + map2.get(key) + "\n");
+                result.append("- " + key + ": " + map1.get(key) + "\n");
+                result.append("  + " + key + ": " + map2.get(key) + "\n");
             }
         }
         result.append("}");
