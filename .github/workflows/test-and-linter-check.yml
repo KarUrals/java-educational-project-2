@@ -14,10 +14,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Setup Gradle
+      - name: Setup Gradle and execute build
         uses: gradle/gradle-build-action@v2
         with:
+          arguments: build
           build-root-directory: app
-        
-      - name: Execute Gradle build
-        run: make build
