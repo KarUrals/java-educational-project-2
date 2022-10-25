@@ -8,4 +8,4 @@ Example of comparison two JSON files:
 [![asciicast](https://asciinema.org/a/530606.svg)](https://asciinema.org/a/530606)
 
 Example of comparison two YML files:
-<script id="asciicast-531835" src="https://asciinema.org/a/531835.js" async></script>
+[![asciicast](https://asciinema.org/a/531835.svg)](https://asciinema.org/a/531835)
