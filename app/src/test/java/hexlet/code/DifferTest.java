@@ -36,7 +36,7 @@ public class DifferTest {
     }
 
     @Test
-    void incorrectFileNameTest(){
+    void incorrectFileNameTest() {
         String errorMessage = "Unexpected format: .kyml";
         Throwable th = assertThrows(IOException.class, () -> {
             Parser.parse(incorrectFilePath);
