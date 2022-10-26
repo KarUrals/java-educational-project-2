@@ -4,38 +4,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Stylish {
-    public static String stylish(List<Map<String, Object>> dataDifferences) {
+    public static String genResultString(List<Map<String, Object>> dataDifferences) {
         StringBuilder result = new StringBuilder();
         result.append("{\n");
         for (Map<String, Object> record : dataDifferences) {
             result.append(genTwoSpaces());
             switch (record.get("state").toString()) {
                 case "added" -> result.append("+ ")
-                        .append(record.get("key"))
-                        .append(": ")
-                        .append(record.get("value"))
-                        .append("\n");
+                        .append(genKeyValueStr(record.get("key"), record.get("value")));
                 case "deleted" -> result.append("- ")
-                        .append(record.get("key"))
-                        .append(": ")
-                        .append(record.get("value"))
-                        .append("\n");
+                        .append(genKeyValueStr(record.get("key"), record.get("value")));
                 case "unchanged" -> result.append(genTwoSpaces())
-                        .append(record.get("key"))
-                        .append(": ")
-                        .append(record.get("value"))
-                        .append("\n");
+                        .append(genKeyValueStr(record.get("key"), record.get("value")));
                 default -> result.append("- ")
-                        .append(record.get("key"))
-                        .append(": ")
-                        .append(record.get("value"))
-                        .append("\n")
+                        .append(genKeyValueStr(record.get("key"), record.get("value")))
                         .append(genTwoSpaces())
                         .append("+ ")
-                        .append(record.get("key"))
-                        .append(": ")
-                        .append(record.get("newValue"))
-                        .append("\n");
+                        .append(genKeyValueStr(record.get("key"), record.get("newValue")));
             }
         }
         result.append("}");
@@ -46,5 +31,14 @@ public class Stylish {
     private static String genTwoSpaces() {
         String space = " ";
         return space.repeat(2);
+    }
+
+    private static String genKeyValueStr(Object key, Object value) {
+        StringBuilder result = new StringBuilder();
+        result.append(key)
+                .append(": ")
+                .append(value)
+                .append("\n");
+        return result.toString();
     }
 }

@@ -7,6 +7,6 @@ import java.util.Map;
 
 public class Formatter {
     public static String genResult(List<Map<String, Object>> dataDifferences) {
-        return Stylish.stylish(dataDifferences);
+        return Stylish.genResultString(dataDifferences);
     }
 }

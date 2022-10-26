@@ -9,15 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DifferTest {
-    private final String jsonFilePath1 = "./src/test/resources/file1.json";
-    private final String jsonFilePath2 = "./src/test/resources/file2.json";
-    private final String nestedJsonFilePath1 = "./src/test/resources/nestedFile1.json";
-    private final String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
-    private final String ymlFilePath1 = "./src/test/resources/file1.yml";
-    private final String ymlFilePath2 = "./src/test/resources/file2.yml";
-
-    private final String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
-    private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
+    private final String format = "stylish";
     private final String incorrectFilePath = "./src/test/resources/file.kyml";
     private final String simpleFileResultExpected = """
                 {
@@ -57,25 +49,33 @@ public class DifferTest {
 
     @Test
     public void nestedJsonDifferGenerateTest() throws Exception {
-        String actual = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2);
+        String nestedJsonFilePath1 = "./src/test/resources/nestedFile1.json";
+        String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
+        String actual = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, format);
         assertEquals(actual, nestedFileResultExpected);
     }
 
     @Test
     public void nestedYmlDifferGenerateTest() throws Exception {
-        String actual = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2);
+        String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
+        String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
+        String actual = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, format);
         assertEquals(actual, nestedFileResultExpected);
     }
 
     @Test
     public void jsonDifferGenerateTest() throws Exception {
-        String actual = Differ.generate(jsonFilePath1, jsonFilePath2);
+        String jsonFilePath1 = "./src/test/resources/file1.json";
+        String jsonFilePath2 = "./src/test/resources/file2.json";
+        String actual = Differ.generate(jsonFilePath1, jsonFilePath2, format);
         assertEquals(actual, simpleFileResultExpected);
     }
 
     @Test
     public void ymlDifferGenerateTest() throws Exception {
-        String actual = Differ.generate(ymlFilePath1, ymlFilePath2);
+        String ymlFilePath1 = "./src/test/resources/file1.yml";
+        String ymlFilePath2 = "./src/test/resources/file2.yml";
+        String actual = Differ.generate(ymlFilePath1, ymlFilePath2, format);
         assertEquals(actual, simpleFileResultExpected);
     }
 
