@@ -1,6 +1,6 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Disabled;
+//import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -55,13 +55,13 @@ public class DifferTest {
                 + setting3: none
               }""";
 
-    @Disabled
+    @Test
     public void nestedJsonDifferGenerateTest() throws Exception {
         String actual = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2);
         assertEquals(actual, nestedFileResultExpected);
     }
 
-    @Disabled
+    @Test
     public void nestedYmlDifferGenerateTest() throws Exception {
         String actual = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2);
         assertEquals(actual, nestedFileResultExpected);
