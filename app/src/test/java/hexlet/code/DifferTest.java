@@ -61,19 +61,17 @@ public class DifferTest {
 
     @Test
     void exceptionTest() {
-        String format = "stylish";
-
         String fileWithWrongExtension = "./src/test/resources/expected/plain.txt";
         String errorMessage1 = "Unexpected file extension: .txt";
         Throwable thrown1 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2, format)
+                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2)
         );
         assertEquals(thrown1.getMessage(), errorMessage1);
 
         String fileWithoutExtension = "someFile";
         String errorMessage2 = "One of the files without extension";
         Throwable thrown2 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithoutExtension, nestedYmlFilePath2, format)
+                Differ.generate(fileWithoutExtension, nestedYmlFilePath2)
         );
         assertEquals(thrown2.getMessage(), errorMessage2);
 
