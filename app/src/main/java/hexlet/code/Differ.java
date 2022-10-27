@@ -1,5 +1,9 @@
 package hexlet.code;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,16 +13,16 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Differ {
-    public static String generate(String filePath1, String filePath2, String format) throws Exception {
+    public static String generate(String filePath1, String filePath2, String format) throws IOException {
 
-        Map<String, Object> map1 = Parser.parse(filePath1);
-        Map<String, Object> map2 = Parser.parse(filePath2);
+        Map<String, Object> map1 = Parser.parse(getFileExtension(filePath1), getFileContent(filePath1));
+        Map<String, Object> map2 = Parser.parse(getFileExtension(filePath2), getFileContent(filePath2));
 
 
-        return Formatter.genResult(genDiff(map1, map2));
+        return Formatter.genResult(format, genDiff(map1, map2));
     }
 
-    public static List<Map<String, Object>> genDiff(Map<String, Object> map1, Map<String, Object> map2) {
+    private static List<Map<String, Object>> genDiff(Map<String, Object> map1, Map<String, Object> map2) {
 
         Set<String> allKeys = new TreeSet<>();
         allKeys.addAll(map1.keySet());
@@ -50,5 +54,21 @@ public class Differ {
         }
 
         return dataDifferences;
+    }
+
+    private static String getFileContent(String filePath) throws IOException {
+        if (getFileExtension(filePath) == null) {
+            throw new IOException("One of the files without extension");
+        }
+
+        Path absolutePath = Paths.get(filePath).toAbsolutePath().normalize();
+
+        return Files.readString(absolutePath);
+    }
+
+    private static String getFileExtension(String filePath) {
+        int index = filePath.lastIndexOf('.');
+
+        return index == -1 ? null : filePath.substring(index);
     }
 }

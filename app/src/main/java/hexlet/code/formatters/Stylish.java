@@ -28,11 +28,6 @@ public class Stylish {
         return result.toString();
     }
 
-    private static String genTwoSpaces() {
-        String space = " ";
-        return space.repeat(2);
-    }
-
     private static String genKeyValueStr(Object key, Object value) {
         StringBuilder result = new StringBuilder();
         result.append(key)
@@ -40,5 +35,10 @@ public class Stylish {
                 .append(value)
                 .append("\n");
         return result.toString();
+    }
+
+    private static String genTwoSpaces() {
+        String space = " ";
+        return space.repeat(2);
     }
 }

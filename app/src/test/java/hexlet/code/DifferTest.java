@@ -1,90 +1,71 @@
 package hexlet.code;
 
-//import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DifferTest {
-    private final String format = "stylish";
-    private final String incorrectFilePath = "./src/test/resources/file.kyml";
-    private final String simpleFileResultExpected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-    private final String nestedFileResultExpected = """
-              {
-                  chars1: [a, b, c]
-                - chars2: [d, e, f]
-                + chars2: false
-                - checked: false
-                + checked: true
-                - default: null
-                + default: [value1, value2]
-                - id: 45
-                + id: null
-                - key1: value1
-                + key2: value2
-                  numbers1: [1, 2, 3, 4]
-                - numbers2: [2, 3, 4, 5]
-                + numbers2: [22, 33, 44, 55]
-                - numbers3: [3, 4, 5]
-                + numbers4: [4, 5, 6]
-                + obj1: {nestedKey=value, isNested=true}
-                - setting1: Some value
-                + setting1: Another value
-                - setting2: 200
-                + setting2: 300
-                - setting3: true
-                + setting3: none
-              }""";
 
-    @Test
-    public void nestedJsonDifferGenerateTest() throws Exception {
-        String nestedJsonFilePath1 = "./src/test/resources/nestedFile1.json";
-        String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
-        String actual = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, format);
-        assertEquals(actual, nestedFileResultExpected);
+    private static String expectedPlain;
+    private static String expectedStylish;
+    private final String nestedJsonFilePath1 = "./src/test/resources/nestedFile1.json";
+    private final String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
+    private final String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
+    private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
+    private final String stylishFormat = "stylish";
+    private final String plainFormat = "plain";
+
+    @BeforeAll
+    static void beforeAll() throws IOException {
+        expectedPlain = Files.readString(Paths.get("./src/test/resources/formatters/plain.txt"));
+        expectedStylish = Files.readString(Paths.get("./src/test/resources/formatters/nestedStylish.txt"));
     }
 
     @Test
-    public void nestedYmlDifferGenerateTest() throws Exception {
-        String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
-        String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
-        String actual = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, format);
-        assertEquals(actual, nestedFileResultExpected);
+    void plainStyleTest() throws Exception {
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, plainFormat);
+        assertEquals(actualJson, expectedPlain);
+
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, plainFormat);
+        assertEquals(actualYml, expectedPlain);
     }
 
     @Test
-    public void jsonDifferGenerateTest() throws Exception {
-        String jsonFilePath1 = "./src/test/resources/file1.json";
-        String jsonFilePath2 = "./src/test/resources/file2.json";
-        String actual = Differ.generate(jsonFilePath1, jsonFilePath2, format);
-        assertEquals(actual, simpleFileResultExpected);
+    void stylishStyleTest() throws Exception {
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, stylishFormat);
+        assertEquals(actualJson, expectedStylish);
+
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, stylishFormat);
+        assertEquals(actualYml, expectedStylish);
     }
 
     @Test
-    public void ymlDifferGenerateTest() throws Exception {
-        String ymlFilePath1 = "./src/test/resources/file1.yml";
-        String ymlFilePath2 = "./src/test/resources/file2.yml";
-        String actual = Differ.generate(ymlFilePath1, ymlFilePath2, format);
-        assertEquals(actual, simpleFileResultExpected);
-    }
+    void exceptionTest() {
+        String fileWithWrongExtension = "./src/test/resources/formatters/plain.txt";
+        String errorMessage1 = "Unexpected file extension: .txt";
+        Throwable thrown1 = assertThrows(IOException.class, () ->
+                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2, stylishFormat)
+        );
+        assertEquals(thrown1.getMessage(), errorMessage1);
 
-    @Test
-    void incorrectFileNameTest() {
-        String errorMessage = "Unexpected format: .kyml";
-        Throwable th = assertThrows(IOException.class, () -> {
-            Parser.parse(incorrectFilePath);
-        });
-        assertEquals(th.getMessage(), errorMessage);
+        String fileWithoutExtension = "someFile";
+        String errorMessage2 = "One of the files without extension";
+        Throwable thrown2 = assertThrows(IOException.class, () ->
+                Differ.generate(fileWithoutExtension, nestedYmlFilePath2, plainFormat)
+        );
+        assertEquals(thrown2.getMessage(), errorMessage2);
+
+        String wrongFormat = "yaml";
+        String errorMessage3 = "Unexpected format: " + wrongFormat;
+        Throwable thrown3 = assertThrows(IOException.class, () ->
+                Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, wrongFormat)
+        );
+        assertEquals(thrown3.getMessage(), errorMessage3);
     }
 }
