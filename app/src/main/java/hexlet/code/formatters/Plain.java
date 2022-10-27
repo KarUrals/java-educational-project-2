@@ -21,7 +21,7 @@ public class Plain {
                 case "changed" -> result.append("Property '")
                         .append(record.get("key"))
                         .append("' was updated. From ")
-                        .append(prepareObject(record.get("value")))
+                        .append(prepareObject(record.get("oldValue")))
                         .append(" to ")
                         .append(prepareObject(record.get("newValue")))
                         .append("\n");

@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class Differ {
@@ -17,7 +18,6 @@ public class Differ {
 
         Map<String, Object> map1 = Parser.parse(getFileExtension(filePath1), getFileContent(filePath1));
         Map<String, Object> map2 = Parser.parse(getFileExtension(filePath2), getFileContent(filePath2));
-
 
         return Formatter.genResult(format, genDiff(map1, map2));
     }
@@ -31,23 +31,23 @@ public class Differ {
         List<Map<String, Object>> dataDifferences = new ArrayList<>();
 
         for (String key : allKeys) {
-            Map<String, Object> diffMap = new HashMap<>();
+            Map<String, Object> diffMap = new LinkedHashMap<>();
             if (!map1.containsKey(key)) {
-                diffMap.put("state", "added");
                 diffMap.put("key", key);
+                diffMap.put("state", "added");
                 diffMap.put("value", map2.get(key));
             } else if (!map2.containsKey(key)) {
-                diffMap.put("state", "deleted");
                 diffMap.put("key", key);
+                diffMap.put("state", "deleted");
                 diffMap.put("value", map1.get(key));
             } else if (Objects.equals(map1.get(key), map2.get(key))) {
-                diffMap.put("state", "unchanged");
                 diffMap.put("key", key);
+                diffMap.put("state", "unchanged");
                 diffMap.put("value", map1.get(key));
             } else {
-                diffMap.put("state", "changed");
                 diffMap.put("key", key);
-                diffMap.put("value", map1.get(key));
+                diffMap.put("state", "changed");
+                diffMap.put("oldValue", map1.get(key));
                 diffMap.put("newValue", map2.get(key));
             }
             dataDifferences.add(diffMap);

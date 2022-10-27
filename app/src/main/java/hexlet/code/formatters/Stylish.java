@@ -17,7 +17,7 @@ public class Stylish {
                 case "unchanged" -> result.append(genTwoSpaces())
                         .append(genKeyValueStr(record.get("key"), record.get("value")));
                 default -> result.append("- ")
-                        .append(genKeyValueStr(record.get("key"), record.get("value")))
+                        .append(genKeyValueStr(record.get("key"), record.get("oldValue")))
                         .append(genTwoSpaces())
                         .append("+ ")
                         .append(genKeyValueStr(record.get("key"), record.get("newValue")));
