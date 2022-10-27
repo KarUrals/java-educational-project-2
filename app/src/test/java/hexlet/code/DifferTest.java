@@ -21,7 +21,6 @@ public class DifferTest {
     private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
     private final String stylishFormat = "stylish";
     private final String plainFormat = "plain";
-    private final String jsonFormat = "json";
 
     @BeforeAll
     static void beforeAll() throws IOException {
@@ -32,44 +31,49 @@ public class DifferTest {
 
     @Test
     void jsonStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, jsonFormat);
+        String format = "json";
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, format);
         assertEquals(actualJson, expectedJson);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, jsonFormat);
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, format);
         assertEquals(actualYml, expectedJson);
     }
 
     @Test
     void plainStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, plainFormat);
+        String format = "plain";
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, format);
         assertEquals(actualJson, expectedPlain);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, plainFormat);
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, format);
         assertEquals(actualYml, expectedPlain);
     }
 
     @Test
     void stylishStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, stylishFormat);
+        String format = "stylish";
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, format);
         assertEquals(actualJson, expectedStylish);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, stylishFormat);
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, format);
         assertEquals(actualYml, expectedStylish);
     }
 
     @Test
     void exceptionTest() {
+        String format = "stylish";
+
         String fileWithWrongExtension = "./src/test/resources/expected/plain.txt";
         String errorMessage1 = "Unexpected file extension: .txt";
         Throwable thrown1 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2, stylishFormat)
+                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2, format)
         );
         assertEquals(thrown1.getMessage(), errorMessage1);
 
         String fileWithoutExtension = "someFile";
         String errorMessage2 = "One of the files without extension";
         Throwable thrown2 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithoutExtension, nestedYmlFilePath2, plainFormat)
+                Differ.generate(fileWithoutExtension, nestedYmlFilePath2, format)
         );
         assertEquals(thrown2.getMessage(), errorMessage2);
 

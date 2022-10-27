@@ -27,7 +27,7 @@ test:
 report:
 	./gradlew jacocoTestReport
 
-lint: # проверка линтер
+lint:
 	./gradlew checkstyleMain checkstyleTest
 
 update-deps:
