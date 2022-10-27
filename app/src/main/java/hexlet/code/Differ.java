@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,17 +63,27 @@ public class Differ {
 
     private static String getFileContent(String filePath) throws IOException {
         if (getFileExtension(filePath) == null) {
-            throw new IOException("One of the files without extension");
+            throw new IOException("Invalid parameter: file '" + filePath + "' without extension");
         }
 
         Path absolutePath = Paths.get(filePath).toAbsolutePath().normalize();
+        File file = new File(absolutePath.toString());
+
+        if (!file.exists()) {
+            throw new IOException("Invalid parameter: file '" + filePath + "' does not exist");
+        }
+
+        if (file.length() == 0) {
+            throw new IOException("Invalid parameter: file '" + filePath + "' is empty");
+        }
 
         return Files.readString(absolutePath);
     }
 
     private static String getFileExtension(String filePath) {
-        int index = filePath.lastIndexOf('.');
+        String absolutFilePath = Paths.get(filePath).toAbsolutePath().normalize().toString();
+        int index = absolutFilePath.lastIndexOf('.');
 
-        return index == -1 ? null : filePath.substring(index);
+        return index == -1 ? null : absolutFilePath.substring(index);
     }
 }

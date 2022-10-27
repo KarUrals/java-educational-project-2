@@ -19,13 +19,11 @@ public class DifferTest {
     private final String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
     private final String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
     private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
-    private final String stylishFormat = "stylish";
-    private final String plainFormat = "plain";
 
     @BeforeAll
     static void beforeAll() throws IOException {
         expectedPlain = Files.readString(Paths.get("./src/test/resources/expected/plain.txt"));
-        expectedStylish = Files.readString(Paths.get("./src/test/resources/expected/nestedStylish.txt"));
+        expectedStylish = Files.readString(Paths.get("./src/test/resources/expected/nestedStylish"));
         expectedJson = Files.readString(Paths.get("./src/test/resources/expected/json.json"));
     }
 
@@ -68,8 +66,8 @@ public class DifferTest {
         );
         assertEquals(thrown1.getMessage(), errorMessage1);
 
-        String fileWithoutExtension = "someFile";
-        String errorMessage2 = "One of the files without extension";
+        String fileWithoutExtension = "./src/test/resources/expected/nestedStylish";
+        String errorMessage2 = "Invalid parameter: file '" + fileWithoutExtension + "' without extension";
         Throwable thrown2 = assertThrows(IOException.class, () ->
                 Differ.generate(fileWithoutExtension, nestedYmlFilePath2)
         );
@@ -81,5 +79,19 @@ public class DifferTest {
                 Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, wrongFormat)
         );
         assertEquals(thrown3.getMessage(), errorMessage3);
+
+        String emptyFile = "./src/test/resources/expected/emptyFile.yml";
+        String errorMessage4 = "Invalid parameter: file '" + emptyFile + "' is empty";
+        Throwable thrown4 = assertThrows(IOException.class, () ->
+                Differ.generate(nestedYmlFilePath1, emptyFile)
+        );
+        assertEquals(thrown4.getMessage(), errorMessage4);
+
+        String nonExistingFile = "someFile.json";
+        String errorMessage5 = "Invalid parameter: file '" + nonExistingFile + "' does not exist";
+        Throwable thrown5 = assertThrows(IOException.class, () ->
+                Differ.generate(nestedYmlFilePath1, nonExistingFile)
+        );
+        assertEquals(thrown5.getMessage(), errorMessage5);
     }
 }
