@@ -37,20 +37,17 @@ public class Differ {
 
         for (String key : allKeys) {
             Map<String, Object> diffMap = new LinkedHashMap<>();
+            diffMap.put("key", key);
             if (!map1.containsKey(key)) {
-                diffMap.put("key", key);
                 diffMap.put("state", "added");
                 diffMap.put("value", map2.get(key));
             } else if (!map2.containsKey(key)) {
-                diffMap.put("key", key);
                 diffMap.put("state", "deleted");
                 diffMap.put("value", map1.get(key));
             } else if (Objects.equals(map1.get(key), map2.get(key))) {
-                diffMap.put("key", key);
                 diffMap.put("state", "unchanged");
                 diffMap.put("value", map1.get(key));
             } else {
-                diffMap.put("key", key);
                 diffMap.put("state", "changed");
                 diffMap.put("oldValue", map1.get(key));
                 diffMap.put("newValue", map2.get(key));
