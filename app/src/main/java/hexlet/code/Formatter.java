@@ -9,12 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Formatter {
+    public static final String STYLISH = "stylish";
+    public static final String PLAIN = "plain";
+    public static final String JSON = "json";
+    public static final String ERROR_MESSAGE = "Unexpected format: ";
+
     public static String genResult(String format, List<Map<String, Object>> dataDifferences) throws IOException {
         return switch (format) {
-            case "stylish" -> Stylish.genResultString(dataDifferences);
-            case "plain" -> Plain.genResultString(dataDifferences);
-            case "json" -> Json.genResultString(dataDifferences);
-            default -> throw new IOException("Unexpected format: " + format);
+            case STYLISH -> Stylish.genResultString(dataDifferences);
+            case PLAIN -> Plain.genResultString(dataDifferences);
+            case JSON -> Json.genResultString(dataDifferences);
+            default -> throw new IOException(ERROR_MESSAGE + format);
         };
     }
 }
