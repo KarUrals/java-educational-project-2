@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 import static hexlet.code.Formatter.JSON;
 import static hexlet.code.Formatter.PLAIN;
 import static hexlet.code.Formatter.STYLISH;
+import static hexlet.code.Formatter.IDENTICAL_FILES_MESSAGE;
+import static hexlet.code.Formatter.EMPTY_FILES_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,6 +24,8 @@ public class DifferTest {
     private final String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
     private final String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
     private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
+    private final String emptyYmlFilePath = "./src/test/resources/expected/emptyFile.yml";
+    private final String emptyJsonFilePath = "./src/test/resources/expected/emptyFile.json";
 
     @BeforeAll
     static void beforeAll() throws IOException {
@@ -31,12 +35,27 @@ public class DifferTest {
     }
 
     @Test
+    void defaultStyleTest() throws Exception {
+        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2);
+        assertEquals(actualJson, expectedStylish);
+
+        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2);
+        assertEquals(actualYml, expectedStylish);
+    }
+
+    @Test
     void jsonStyleTest() throws Exception {
         String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, JSON);
         assertEquals(actualJson, expectedJson);
 
         String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, JSON);
         assertEquals(actualYml, expectedJson);
+
+        String compareSameFiles = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath1, JSON);
+        assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
+
+        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, JSON);
+        assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test
@@ -46,6 +65,12 @@ public class DifferTest {
 
         String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, PLAIN);
         assertEquals(actualYml, expectedPlain);
+
+        String compareSameFiles = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath1, PLAIN);
+        assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
+
+        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, PLAIN);
+        assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test
@@ -55,6 +80,12 @@ public class DifferTest {
 
         String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, STYLISH);
         assertEquals(actualYml, expectedStylish);
+
+        String compareSameFiles = Differ.generate(nestedJsonFilePath2, nestedJsonFilePath2, STYLISH);
+        assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
+
+        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, STYLISH);
+        assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test

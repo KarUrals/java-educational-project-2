@@ -9,6 +9,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Differences {
+    public static final String KEY = "key";
+    public static final String STATE = "state";
+    public static final String VALUE = "value";
+    public static final String OLD_VALUE = "oldValue";
+    public static final String NEW_VALUE = "newValue";
+    public static final String ADDED_STATE = "added";
+    public static final String DELETED_STATE = "deleted";
+    public static final String UNCHANGED_STATE = "unchanged";
+    public static final String CHANGED_STATE = "changed";
 
     public static List<Map<String, Object>> genListOfDiffMaps(Map<String, Object> map1, Map<String, Object> map2) {
         Set<String> allKeys = new TreeSet<>();
@@ -27,20 +36,20 @@ public class Differences {
     private static Map<String, Object> genMapOfDiff(String key, Map<String, Object> map1, Map<String, Object> map2) {
         Map<String, Object> diffMap = new LinkedHashMap<>();
 
-        diffMap.put("key", key);
+        diffMap.put(KEY, key);
         if (!map1.containsKey(key)) {
-            diffMap.put("state", "added");
-            diffMap.put("value", map2.get(key));
+            diffMap.put(STATE, ADDED_STATE);
+            diffMap.put(VALUE, map2.get(key));
         } else if (!map2.containsKey(key)) {
-            diffMap.put("state", "deleted");
-            diffMap.put("value", map1.get(key));
+            diffMap.put(STATE, DELETED_STATE);
+            diffMap.put(VALUE, map1.get(key));
         } else if (Objects.equals(map1.get(key), map2.get(key))) {
-            diffMap.put("state", "unchanged");
-            diffMap.put("value", map1.get(key));
+            diffMap.put(STATE, UNCHANGED_STATE);
+            diffMap.put(VALUE, map1.get(key));
         } else {
-            diffMap.put("state", "changed");
-            diffMap.put("oldValue", map1.get(key));
-            diffMap.put("newValue", map2.get(key));
+            diffMap.put(STATE, CHANGED_STATE);
+            diffMap.put(OLD_VALUE, map1.get(key));
+            diffMap.put(NEW_VALUE, map2.get(key));
         }
 
         return diffMap;
