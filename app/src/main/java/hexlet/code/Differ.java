@@ -21,9 +21,9 @@ public class Differ {
         return Formatter.genResult(format, Differences.genListOfDiffMaps(map1, map2));
     }
 
-    public static void generate(String filePath1, String filePath2) throws IOException {
+    public static String generate(String filePath1, String filePath2) throws IOException {
 
-        generate(filePath1, filePath2, STYLISH);
+        return generate(filePath1, filePath2, STYLISH);
     }
 
     private static String getFileContent(String filePath) throws IOException {
