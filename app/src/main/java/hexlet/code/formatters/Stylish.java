@@ -13,7 +13,7 @@ import static hexlet.code.TreeDifferenceFinder.UNCHANGED_STATE;
 import static hexlet.code.TreeDifferenceFinder.VALUE;
 import static hexlet.code.Formatter.NEXT_LINE_TRANSFER;
 
-public class Stylish {
+public final class Stylish {
     private static final String DOUBLE_SPACE = "  ";
     private static final String START_OF_FILE = "{";
     private static final String END_OF_FILE = "}";

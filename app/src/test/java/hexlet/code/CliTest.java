@@ -17,7 +17,7 @@ import static hexlet.code.DifferTest.NESTED_JSON_FILE_PATH2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class CliTest {
+public final class CliTest {
     private static final CommandLine CMD = new CommandLine(new App());
     private static ByteArrayOutputStream output;
 

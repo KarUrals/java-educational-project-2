@@ -14,7 +14,7 @@ import static hexlet.code.TreeDifferenceFinder.STATE;
 import static hexlet.code.TreeDifferenceFinder.VALUE;
 import static hexlet.code.Formatter.NEXT_LINE_TRANSFER;
 
-public class Plain {
+public final class Plain {
     private static final String COMPLEX_VALUE = "[complex value]";
     private static final String STRING_OBJECT_MARKER = "'";
     private static final String START_OF_LINE = "Property '";
