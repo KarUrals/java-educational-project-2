@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Json {
-    public static String render(List<Map<String, Object>> dataDifferences) throws JsonProcessingException {
+    public String render(List<Map<String, Object>> dataDifferences) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataDifferences);

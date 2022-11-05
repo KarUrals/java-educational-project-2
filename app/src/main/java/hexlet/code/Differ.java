@@ -7,23 +7,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import static hexlet.code.Formatter.STYLISH;
+import static hexlet.code.Formatter.STYLISH_FORMAT;
 
 public class Differ {
     public static final String ERROR_MESSAGE_WO_EXT = "File without extension: ";
     public static final String ERROR_MESSAGE_FILE_NF = "File not found: ";
+    private static final TreeDifferenceFinder FINDER = new TreeDifferenceFinder();
 
     public static String generate(String filePath1, String filePath2, String format) throws IOException {
 
         Map<String, Object> map1 = Parser.parse(getFileExtension(filePath1), getFileContent(filePath1));
         Map<String, Object> map2 = Parser.parse(getFileExtension(filePath2), getFileContent(filePath2));
 
-        return Formatter.generateResult(format, TreeDifferenceFinder.genListOfDiffMaps(map1, map2));
+        return Formatter.generateResult(format, FINDER.genListOfDiffMaps(map1, map2));
     }
 
     public static String generate(String filePath1, String filePath2) throws IOException {
 
-        return generate(filePath1, filePath2, STYLISH);
+        return generate(filePath1, filePath2, STYLISH_FORMAT);
     }
 
     private static String getFileContent(String filePath) throws IOException {

@@ -23,7 +23,7 @@ public class Plain {
     private static final String CHANGED_LINE_MIDL = "' was updated. From ";
     private static final String CHANGED_LINE_END = " to ";
 
-    public static String render(List<Map<String, Object>> dataDifferences) {
+    public String render(List<Map<String, Object>> dataDifferences) {
         StringBuilder result = new StringBuilder();
         for (Map<String, Object> record : dataDifferences) {
             switch (record.get(STATE).toString()) {

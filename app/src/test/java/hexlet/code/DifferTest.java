@@ -2,153 +2,125 @@ package hexlet.code;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import picocli.CommandLine;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static hexlet.code.Formatter.JSON;
-import static hexlet.code.Formatter.PLAIN;
-import static hexlet.code.Formatter.STYLISH;
+import static hexlet.code.Formatter.JSON_FORMAT;
+import static hexlet.code.Formatter.PLAIN_FORMAT;
+import static hexlet.code.Formatter.STYLISH_FORMAT;
 import static hexlet.code.Formatter.IDENTICAL_FILES_MESSAGE;
 import static hexlet.code.Formatter.EMPTY_FILES_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DifferTest {
-
+    public static final String NESTED_JSON_FILE_PATH1 = "./src/test/resources/nestedFile1.json";
+    public static final String NESTED_JSON_FILE_PATH2 = "./src/test/resources/nestedFile2.json";
+    private static final String NESTED_YML_FILE_PATH1 = "./src/test/resources/nestedFile1.yml";
+    private static final String NESTED_YML_FILE_PATH2 = "./src/test/resources/nestedFile2.yml";
+    private static final String EMPTY_YML_FILE_PATH = "./src/test/resources/expected/emptyFile.yml";
+    private static final String EMPTY_JSON_FILE_PATH = "./src/test/resources/expected/emptyFile.json";
     private static String expectedPlain;
     private static String expectedStylish;
     private static String expectedJson;
-    private final String nestedJsonFilePath1 = "./src/test/resources/nestedFile1.json";
-    private final String nestedJsonFilePath2 = "./src/test/resources/nestedFile2.json";
-    private final String nestedYmlFilePath1 = "./src/test/resources/nestedFile1.yml";
-    private final String nestedYmlFilePath2 = "./src/test/resources/nestedFile2.yml";
-    private final String emptyYmlFilePath = "./src/test/resources/expected/emptyFile.yml";
-    private final String emptyJsonFilePath = "./src/test/resources/expected/emptyFile.json";
+    private static Differ differ;
+    private static Parser parser;
+    private static Formatter formatter;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         expectedPlain = Files.readString(Paths.get("./src/test/resources/expected/plain.txt"));
         expectedStylish = Files.readString(Paths.get("./src/test/resources/expected/nestedStylish"));
         expectedJson = Files.readString(Paths.get("./src/test/resources/expected/json.json"));
+        differ = new Differ();
+        parser = new Parser();
+        formatter = new Formatter();
     }
 
     @Test
     void defaultStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2);
+        String actualJson = differ.generate(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2);
         assertEquals(actualJson, expectedStylish);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2);
+        String actualYml = differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH2);
         assertEquals(actualYml, expectedStylish);
     }
 
     @Test
     void jsonStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, JSON);
+        String actualJson = Differ.generate(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2, JSON_FORMAT);
         assertEquals(actualJson, expectedJson);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, JSON);
+        String actualYml = Differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH2, JSON_FORMAT);
         assertEquals(actualYml, expectedJson);
 
-        String compareSameFiles = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath1, JSON);
+        String compareSameFiles = Differ.generate(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH1, JSON_FORMAT);
         assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
 
-        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, JSON);
+        String compareEmptyFiles = Differ.generate(EMPTY_YML_FILE_PATH, EMPTY_JSON_FILE_PATH, JSON_FORMAT);
         assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test
     void plainStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, PLAIN);
+        String actualJson = Differ.generate(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2, PLAIN_FORMAT);
         assertEquals(actualJson, expectedPlain);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, PLAIN);
+        String actualYml = Differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH2, PLAIN_FORMAT);
         assertEquals(actualYml, expectedPlain);
 
-        String compareSameFiles = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath1, PLAIN);
+        String compareSameFiles = Differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH1, PLAIN_FORMAT);
         assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
 
-        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, PLAIN);
+        String compareEmptyFiles = Differ.generate(EMPTY_YML_FILE_PATH, EMPTY_JSON_FILE_PATH, PLAIN_FORMAT);
         assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test
     void stylishStyleTest() throws Exception {
-        String actualJson = Differ.generate(nestedJsonFilePath1, nestedJsonFilePath2, STYLISH);
+        String actualJson = Differ.generate(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2, STYLISH_FORMAT);
         assertEquals(actualJson, expectedStylish);
 
-        String actualYml = Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, STYLISH);
+        String actualYml = Differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH2, STYLISH_FORMAT);
         assertEquals(actualYml, expectedStylish);
 
-        String compareSameFiles = Differ.generate(nestedJsonFilePath2, nestedJsonFilePath2, STYLISH);
+        String compareSameFiles = Differ.generate(NESTED_JSON_FILE_PATH2, NESTED_JSON_FILE_PATH2, STYLISH_FORMAT);
         assertEquals(compareSameFiles, IDENTICAL_FILES_MESSAGE);
 
-        String compareEmptyFiles = Differ.generate(emptyYmlFilePath, emptyJsonFilePath, STYLISH);
+        String compareEmptyFiles = Differ.generate(EMPTY_YML_FILE_PATH, EMPTY_JSON_FILE_PATH, STYLISH_FORMAT);
         assertEquals(compareEmptyFiles, EMPTY_FILES_MESSAGE);
     }
 
     @Test
     void exceptionTest() {
         String fileWithWrongExtension = "./src/test/resources/expected/plain.txt";
-        String errorMessage1 = Parser.ERROR_MESSAGE + "txt";
+        String errorMessage1 = parser.ERROR_MESSAGE + "txt";
         Throwable thrown1 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithWrongExtension, nestedYmlFilePath2)
+                Differ.generate(fileWithWrongExtension, NESTED_YML_FILE_PATH2)
         );
         assertEquals(thrown1.getMessage(), errorMessage1);
 
         String fileWithoutExtension = "./src/test/resources/expected/nestedStylish";
         String errorMessage2 = Differ.ERROR_MESSAGE_WO_EXT + fileWithoutExtension;
         Throwable thrown2 = assertThrows(IOException.class, () ->
-                Differ.generate(fileWithoutExtension, nestedYmlFilePath2)
+                Differ.generate(fileWithoutExtension, NESTED_YML_FILE_PATH2)
         );
         assertEquals(thrown2.getMessage(), errorMessage2);
 
         String wrongFormat = "yaml";
-        String errorMessage3 = Formatter.ERROR_MESSAGE + wrongFormat;
+        String errorMessage3 = formatter.ERROR_MESSAGE + wrongFormat;
         Throwable thrown3 = assertThrows(IOException.class, () ->
-                Differ.generate(nestedYmlFilePath1, nestedYmlFilePath2, wrongFormat)
+                Differ.generate(NESTED_YML_FILE_PATH1, NESTED_YML_FILE_PATH2, wrongFormat)
         );
         assertEquals(thrown3.getMessage(), errorMessage3);
 
         String nonExistingFile = "someFile.json";
         String errorMessage4 = Differ.ERROR_MESSAGE_FILE_NF + nonExistingFile;
         Throwable thrown4 = assertThrows(IOException.class, () ->
-                Differ.generate(nestedYmlFilePath1, nonExistingFile)
+                Differ.generate(NESTED_YML_FILE_PATH1, nonExistingFile)
         );
         assertEquals(thrown4.getMessage(), errorMessage4);
-    }
-
-    @Test
-    void correctParametersCliTest() {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(output));
-        App app = new App();
-        CommandLine cmd = new CommandLine(app);
-
-        int exitCode = cmd.execute(nestedJsonFilePath1, nestedJsonFilePath2);
-        String expected = expectedStylish + "\n";
-        assertEquals(expected, output.toString());
-        assertEquals(0, exitCode);
-
-        System.setOut(null);
-    }
-
-    @Test
-    void wrongParametersCliTest() {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(output));
-        App app = new App();
-        CommandLine cmd = new CommandLine(app);
-
-        int exitCode = cmd.execute("-f=yaml", nestedYmlFilePath1, nestedYmlFilePath2);
-        String expected = Formatter.ERROR_MESSAGE + "yaml" + "\n";
-        assertEquals(expected, output.toString());
-        assertEquals(0, exitCode);
-
-        System.setOut(null);
     }
 }

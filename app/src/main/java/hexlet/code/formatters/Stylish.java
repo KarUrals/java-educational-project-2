@@ -20,7 +20,7 @@ public class Stylish {
     private static final String PLUS_MARKER = "+ ";
     private static final String MINUS_MARKER = "- ";
     private static final String KEY_VALUE_SEP = ": ";
-    public static String render(List<Map<String, Object>> dataDifferences) {
+    public String render(List<Map<String, Object>> dataDifferences) {
         StringBuilder result = new StringBuilder();
         result.append(START_OF_FILE).append(NEXT_LINE_TRANSFER);
         for (Map<String, Object> record : dataDifferences) {
