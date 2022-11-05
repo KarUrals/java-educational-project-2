@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Differences {
+public class TreeDifferenceFinder {
     public static final String KEY = "key";
     public static final String STATE = "state";
     public static final String VALUE = "value";

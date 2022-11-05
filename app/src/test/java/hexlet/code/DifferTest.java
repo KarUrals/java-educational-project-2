@@ -2,8 +2,11 @@ package hexlet.code;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import picocli.CommandLine;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -117,5 +120,35 @@ public class DifferTest {
                 Differ.generate(nestedYmlFilePath1, nonExistingFile)
         );
         assertEquals(thrown4.getMessage(), errorMessage4);
+    }
+
+    @Test
+    void correctParametersCliTest() {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        App app = new App();
+        CommandLine cmd = new CommandLine(app);
+
+        int exitCode = cmd.execute(nestedJsonFilePath1, nestedJsonFilePath2);
+        String expected = expectedStylish + "\n";
+        assertEquals(expected, output.toString());
+        assertEquals(0, exitCode);
+
+        System.setOut(null);
+    }
+
+    @Test
+    void wrongParametersCliTest() {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        App app = new App();
+        CommandLine cmd = new CommandLine(app);
+
+        int exitCode = cmd.execute("-f=yaml", nestedYmlFilePath1, nestedYmlFilePath2);
+        String expected = Formatter.ERROR_MESSAGE + "yaml" + "\n";
+        assertEquals(expected, output.toString());
+        assertEquals(0, exitCode);
+
+        System.setOut(null);
     }
 }

@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static hexlet.code.Differences.STATE;
-import static hexlet.code.Differences.UNCHANGED_STATE;
+import static hexlet.code.TreeDifferenceFinder.STATE;
+import static hexlet.code.TreeDifferenceFinder.UNCHANGED_STATE;
 
 public class Formatter {
     public static final String STYLISH = "stylish";
@@ -20,7 +20,7 @@ public class Formatter {
     public static final String EMPTY_FILES_MESSAGE = "Empty files sent for comparison";
     public static final String IDENTICAL_FILES_MESSAGE = "The two files are semantically identical";
 
-    public static String genResult(String format, List<Map<String, Object>> dataDifferences) throws IOException {
+    public static String generateResult(String format, List<Map<String, Object>> dataDifferences) throws IOException {
         if (dataDifferences.isEmpty()) {
             return EMPTY_FILES_MESSAGE;
         }
@@ -30,9 +30,9 @@ public class Formatter {
         }
 
         return switch (format) {
-            case STYLISH -> Stylish.genResultString(dataDifferences);
-            case PLAIN -> Plain.genResultString(dataDifferences);
-            case JSON -> Json.genResultString(dataDifferences);
+            case STYLISH -> Stylish.render(dataDifferences);
+            case PLAIN -> Plain.render(dataDifferences);
+            case JSON -> Json.render(dataDifferences);
             default -> throw new IOException(ERROR_MESSAGE + format);
         };
     }

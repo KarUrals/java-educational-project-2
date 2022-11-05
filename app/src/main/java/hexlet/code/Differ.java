@@ -18,7 +18,7 @@ public class Differ {
         Map<String, Object> map1 = Parser.parse(getFileExtension(filePath1), getFileContent(filePath1));
         Map<String, Object> map2 = Parser.parse(getFileExtension(filePath2), getFileContent(filePath2));
 
-        return Formatter.genResult(format, Differences.genListOfDiffMaps(map1, map2));
+        return Formatter.generateResult(format, TreeDifferenceFinder.genListOfDiffMaps(map1, map2));
     }
 
     public static String generate(String filePath1, String filePath2) throws IOException {

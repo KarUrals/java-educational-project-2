@@ -4,14 +4,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static hexlet.code.Differences.ADDED_STATE;
-import static hexlet.code.Differences.CHANGED_STATE;
-import static hexlet.code.Differences.DELETED_STATE;
-import static hexlet.code.Differences.KEY;
-import static hexlet.code.Differences.NEW_VALUE;
-import static hexlet.code.Differences.OLD_VALUE;
-import static hexlet.code.Differences.STATE;
-import static hexlet.code.Differences.VALUE;
+import static hexlet.code.TreeDifferenceFinder.ADDED_STATE;
+import static hexlet.code.TreeDifferenceFinder.CHANGED_STATE;
+import static hexlet.code.TreeDifferenceFinder.DELETED_STATE;
+import static hexlet.code.TreeDifferenceFinder.KEY;
+import static hexlet.code.TreeDifferenceFinder.NEW_VALUE;
+import static hexlet.code.TreeDifferenceFinder.OLD_VALUE;
+import static hexlet.code.TreeDifferenceFinder.STATE;
+import static hexlet.code.TreeDifferenceFinder.VALUE;
 import static hexlet.code.Formatter.NEXT_LINE_TRANSFER;
 
 public class Plain {
@@ -23,7 +23,7 @@ public class Plain {
     private static final String CHANGED_LINE_MIDL = "' was updated. From ";
     private static final String CHANGED_LINE_END = " to ";
 
-    public static String genResultString(List<Map<String, Object>> dataDifferences) {
+    public static String render(List<Map<String, Object>> dataDifferences) {
         StringBuilder result = new StringBuilder();
         for (Map<String, Object> record : dataDifferences) {
             switch (record.get(STATE).toString()) {
