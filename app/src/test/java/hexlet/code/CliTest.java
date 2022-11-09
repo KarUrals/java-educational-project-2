@@ -12,8 +12,8 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static hexlet.code.DifferTest.NESTED_JSON_FILE_PATH1;
-import static hexlet.code.DifferTest.NESTED_JSON_FILE_PATH2;
+import static hexlet.code.DifferTest.JSON_FILE_PATH1;
+import static hexlet.code.DifferTest.JSON_FILE_PATH2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -34,16 +34,17 @@ public final class CliTest {
 
     @Test
     void correctParametersCliTest() throws IOException {
-        int exitCode = CMD.execute(NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2);
-        String expected = Files.readString(Paths.get("./src/test/resources/expected/nestedStylish")) + "\n";
+        int exitCode = CMD.execute(JSON_FILE_PATH1, JSON_FILE_PATH2);
+        String expected = Files.readString(Paths.get("./src/test/resources/expected/nestedStylish"))
+                + Formatter.NEXT_LINE_TRANSFER;
         assertEquals(expected, output.toString());
         assertEquals(0, exitCode);
     }
 
     @Test
     void wrongParametersCliTest() {
-        int exitCode = CMD.execute("-f=yaml", NESTED_JSON_FILE_PATH1, NESTED_JSON_FILE_PATH2);
-        String expected = Formatter.ERROR_MESSAGE + "yaml" + "\n";
+        int exitCode = CMD.execute("-f=yaml", JSON_FILE_PATH1, JSON_FILE_PATH2);
+        String expected = String.format(Formatter.ERROR_MESSAGE + Formatter.NEXT_LINE_TRANSFER, "yaml");
         assertEquals(expected, output.toString());
         assertEquals(0, exitCode);
     }

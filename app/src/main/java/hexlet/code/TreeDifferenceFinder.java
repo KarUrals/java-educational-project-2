@@ -19,7 +19,10 @@ public class TreeDifferenceFinder {
     public static final String UNCHANGED_STATE = "unchanged";
     public static final String CHANGED_STATE = "changed";
 
-    public static List<Map<String, Object>> genListOfDiffMaps(Map<String, Object> map1, Map<String, Object> map2) {
+    public static List<Map<String, Object>> findDifferenceBetweenTwoMaps(
+            Map<String, Object> map1,
+            Map<String, Object> map2) {
+
         Set<String> allKeys = new TreeSet<>();
         allKeys.addAll(map1.keySet());
         allKeys.addAll(map2.keySet());
@@ -27,13 +30,18 @@ public class TreeDifferenceFinder {
         List<Map<String, Object>> listDiff = new ArrayList<>();
 
         for (String key : allKeys) {
-            listDiff.add(genMapOfDiff(key, map1, map2));
+            listDiff.add(analyzeKeyIsInBothMaps(key, map1, map2));
         }
 
         return listDiff;
     }
 
-    private static Map<String, Object> genMapOfDiff(String key, Map<String, Object> map1, Map<String, Object> map2) {
+
+    private static Map<String, Object> analyzeKeyIsInBothMaps(
+            String key,
+            Map<String, Object> map1,
+            Map<String, Object> map2) {
+
         Map<String, Object> diffMap = new LinkedHashMap<>();
 
         diffMap.put(KEY, key);
